@@ -1,0 +1,148 @@
+#!/usr/bin/env bash
+
+USAGE=$(cat <<EOF
+Usage: $(basename "$0") [hypervisor] [action]
+
+virtualbox
+  start             -- Start all currently paused VM's
+  shutdown          -- Shutdown all currently running VM's
+  destroy           -- Destroy all VM's
+  list              -- List all VM's
+
+vmware
+  start             -- Start all currentl paused VM's
+  shutdown          -- Shutdown all currently running VM's
+  destroy           -- Destroy all VM's
+  restart-network   -- Restart VMWare Fusion networking
+  list              -- List All VM's
+
+vagrant
+  start             -- Start all vagrant machines
+  shutdown          -- Shutdown all vagrant machines
+  destroy           -- Destroy all vagrant machines
+  list              -- List all vagrant machines
+  box-update        -- Update all vagrant boxes
+EOF
+)
+
+virtualbox-commands() {
+  case "$1" in
+    start )
+      for VM in $(VBoxManage list vms | awk '{ print $2; }'); do VBoxManage controlvm "$VM" resume; done
+      ;;
+    shutdown )
+      for VM in $(VBoxManage list runningvms | awk '{ print $2; }'); do VBoxManage controlvm "$VM" poweroff; done
+      ;;
+    destroy )
+      for VM in $(VBoxManage list vms | awk '{ print $2; }'); do VBoxManage controlvm "$VM" destroy; done
+      ;;
+    list )
+      VBoxManage list runningvms
+      ;;
+    * )
+      usage
+      exit 1
+      ;;
+  esac
+}
+
+vmware-commands() {
+  case "$1" in
+    start )
+      true
+      ;;
+    shutdown )
+      true
+      ;;
+    destroy )
+      true
+      ;;
+    restart-network )
+      sudo vmnet-cli --configure
+      sudo vmnet-cli --stop
+      sudo vmnet-cli --start
+      ;;
+    list )
+      true
+      ;;
+    * )
+      usage
+      exit 1
+      ;;
+  esac
+}
+
+vagrant-commands() {
+  case "$1" in
+    start )
+      vagrant global-status | awk '/running/{print $1}' | xargs -n 1 -P 0 vagrant up --no-provision
+      ;;
+    shutdown )
+      vagrant global-status | awk '/running/{print $1}' | xargs -n 1 -P 0 vagrant halt -f
+      ;;
+    destroy )
+      vagrant global-status | awk '/running/{print $1}' | xargs -n 1 -P 0 vagrant destroy -f
+      vagrant global-status --prune
+      ;;
+    list )
+      vagrant global-status
+      ;;
+    box-update )
+      AVAILABLE_UPDATES=$(vagrant box outdated --global | grep outdated | tr -d "*'" | cut -d ' ' -f 2)
+
+      if [ ! ${#AVAILABLE_UPDATES[@]} -eq 0 ]; then
+        for box in $AVAILABLE_UPDATES ; do
+          echo "Found an update for $box"
+
+          # Add latest version
+          vagrant box update --box "$box"
+
+          Remove all old versions
+          for version in $(vagrant box list | grep "$box" | cut -d ',' -f 2 | tr -d ' )' | sort -V | uniq | sed \$d) ; do
+            vagrant box remove "$box" -f --box-version="$version"
+          done
+
+        done
+
+        echo "All boxes are now up to date!"
+      else
+        echo "All boxes are already up to date!"
+      fi
+
+      vagrant box outdated --global
+      ;;
+    * )
+      usage
+      exit 1
+      ;;
+  esac
+}
+
+usage() {
+  echo -e "$USAGE"
+}
+
+check_arguments () {
+  if [ "$1" -lt "$2" ]; then
+    usage
+    exit 1
+  fi
+}
+
+check_arguments $# 2
+
+case $1 in
+  vmware )
+    vmware-commands "$2"
+    ;;
+  virtualbox )
+    virtualbox-commands "$2"
+    ;;
+  vagrant )
+    vagrant-commands "$2"
+    ;;
+  * )
+    usage
+    exit 1
+    ;;
+esac

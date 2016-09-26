@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+
+# Make vim the default editor
+# use vim as the visual editor
+export VISUAL=vim
+export EDITOR=$VISUAL
+
+# Set the LOG_LEVEL to something sane
+export LOG_LEVEL=3
+
+# Don’t clear the screen after quitting a manual page
+export MANPAGER="less -X"
+
+# enable colored output from ls, etc
+export CLICOLOR=1
+
+# Larger bash history (allow 32³ entries; default is 500)
+export HISTSIZE=32768
+export HISTFILESIZE=$HISTSIZE
+export HISTCONTROL=ignoredups
+
+# timestamps for bash history. www.debian-administration.org/users/rossen/weblog/1
+# saved for later analysis
+HISTTIMEFORMAT='%F %T '
+export HISTTIMEFORMAT
+
+# Make some commands not show up in history
+export HISTIGNORE="pwd;exit:date:* --help"
+
+# After each command, append to the history file and reread it.
+export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; history -r";
+
+# Link Homebrew casks in `/Applications` rather than `~/Applications`
+export HOMEBREW_CASK_OPTS="--appdir=/Applications"
+
+# Where does the code go
+export CODE_PATH="$HOME/code/samdunne"
+
+# Prefer US English and use UTF-8
+export LANG="en_US.UTF-8";
+export LC_ALL="en_US.UTF-8";
+
+# Highlight section titles in manual pages
+export LESS_TERMCAP_md="${yellow}";
+
+# VMWare Fusion as default Vagrant provider
+export VAGRANT_DEFAULT_PROVIDER="vmware_fusion"
+
+# Python
+export VIRTUAL_ENV_DISABLE_PROMPT=1
+export WORKON_HOME="$HOME/.virtualenvs"
+
+# Git export
+export GIT_SSH_COMMAND="cat ~/.ssh/config* > ~/.ssh/compilation && ssh -F ~/.ssh/compilation"
+
+# Docker
+export DOCKER_REPO_PREFIX=samdunne
+
+# Go
+export GOPATH="$CODE_PATH/go"
+export GOROOT="$(brew --prefix go)"/libexec

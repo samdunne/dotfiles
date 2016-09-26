@@ -1,0 +1,9 @@
+.git/
+.DS_Store
+sync.sh
+setup.sh
+test.sh
+.sync-ignore
+README.md
+LICENSE.md
+setup/

@@ -1,0 +1,14 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure('2') do |config|
+  config.vm.provider :virtualbox do |vbox|
+    vbox.memory = 512
+    vbox.cpus = 1
+  end
+
+  config.vm.provider :vmware_fusion do |vmware|
+    vmware.memory = 512
+    vmware.cpus = 1
+  end
+end

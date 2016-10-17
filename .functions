@@ -97,7 +97,7 @@ function update() {
 
 	# Homebrew
 	brew update
-	brew upgrade
+	brew upgrade --all
 	brew cleanup
   	brew prune
 	brew cask cleanup

@@ -4,6 +4,7 @@ set -eo pipefail
 mkdir -p "$GOPATH"
 mkdir -p "$GOPATH"/src/github.com/samdunne
 
-brew install go
+source "$HOME"/.bash_profile
+
 go get golang.org/x/tools/cmd/godoc
 go get golang.org/x/tools/cmd/vet

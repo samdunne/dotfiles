@@ -1,10 +1,9 @@
 #!/usr/bin/env bash
 set -eo pipefail
 
-brew install python --with-brewed-openssl
 pip install virtualenv
 
-export VIRTUAL_ENV_DISABLE_PROMPT=1
+source "$HOME"/.bash_profile
 
 virtualenv ~/.virtualenvs/default
 

@@ -1,0 +1,14 @@
+{
+  "auto_upgrade_frequency": 0,
+  "installed_packages": [
+    "Monokai JSON+",
+    "JSONLint",
+    "Terraform",
+    "Theme - Monokai",
+    "GitGutter",
+    "SublimeLinter",
+    "SublimeLinter-rubocop",
+    "SublimeLinter-json",
+    "SublimeLinter-shellcheck"
+  ]
+}

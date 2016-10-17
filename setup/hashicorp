@@ -13,4 +13,4 @@ function download_with_version() {
 }
 
 download_with_version "packer" "0.10.1"
-download_with_version "terraform" "0.7.3"
+download_with_version "terraform" "0.7.5"

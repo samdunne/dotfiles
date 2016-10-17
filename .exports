@@ -48,7 +48,6 @@ export VAGRANT_DEFAULT_PROVIDER="vmware_fusion"
 
 # Python
 export VIRTUAL_ENV_DISABLE_PROMPT=1
-export WORKON_HOME="$HOME/.virtualenvs"
 
 # Git export
 export GIT_SSH_COMMAND="cat ~/.ssh/config* > ~/.ssh/compilation && ssh -F ~/.ssh/compilation"
@@ -59,3 +58,6 @@ export DOCKER_REPO_PREFIX=samdunne
 # Go
 export GOPATH="$CODE_PATH/go"
 export GOROOT="$(brew --prefix go)"/libexec
+
+# ChefDK
+eval "$(chef shell-init bash)"

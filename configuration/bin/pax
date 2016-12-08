@@ -1,0 +1,94 @@
+#!/usr/bin/env bash
+
+USAGE=$(cat <<EOF
+Usage: $(basename "$0") [action] <options> [file]
+
+pack
+  zip               -- Start all currently paused VM's
+  xpi               -- Shutdown all currently running VM's
+  tar-gz            -- Destroy all VM's
+  tar-bz2           -- List all VM's
+
+unpack              -- List all running VM's under all hypervisors
+EOF
+)
+
+pack() {
+  if [ $# -lt 2 ] ; then
+    echo -e "\npack() usage:"
+    echo -e "\tpack archive_file_name file1 file2 ... fileN"
+    echo -e "\tcreates archive of files 1-N\n"
+  else
+    DEST=$1
+    shift
+
+    case $1 in
+      *.tar.bz2) tar -cvjf "$DEST" "$@" ;;
+      *.tar.gz) tar -cvzf "$DEST" "$@" ;;
+      *.zip) zip -r "$DEST" "$@" ;;
+      *.xpi) zip -r "$DEST" "$@" ;;
+      *) echo "Unknown file type - $DEST" ;;
+    esac
+  fi
+}
+
+unpack() {
+  if [ -f "$1" ] ; then
+    local filename=$(basename "$1")
+    local foldername="${filename%%.*}"
+    local fullpath=`perl -e 'use Cwd "abs_path";print abs_path(shift)' "$1"`
+    local didfolderexist=false
+    if [ -d "$foldername" ]; then
+      didfolderexist=true
+      read -rp "$foldername already exists, do you want to overwrite it? (y/n) " -n 1
+      echo
+      if [[ $REPLY =~ ^[Nn]$ ]]; then
+        return
+      fi
+    fi
+    mkdir -p "$foldername" && cd "$foldername"
+    case $1 in
+      *.tar.bz2) tar xjf "$fullpath" ;;
+      *.tar.gz) tar xzf "$fullpath" ;;
+      *.tar.xz) tar Jxvf "$fullpath" ;;
+      *.tar.Z) tar xzf "$fullpath" ;;
+      *.tar) tar xf "$fullpath" ;;
+      *.taz) tar xzf "$fullpath" ;;
+      *.tb2) tar xjf "$fullpath" ;;
+      *.tbz) tar xjf "$fullpath" ;;
+      *.tbz2) tar xjf "$fullpath" ;;
+      *.tgz) tar xzf "$fullpath" ;;
+      *.txz) tar Jxvf "$fullpath" ;;
+      *.zip) unzip "$fullpath" ;;
+      *) echo "'$1' cannot be extracted via extract()" && cd .. && ! $didfolderexist && rm -r "$foldername" ;;
+    esac
+  else
+    echo "'$1' is not a valid file"
+  fi
+}
+
+usage() {
+  echo -e "$USAGE"
+}
+
+check_arguments () {
+  if [ "$1" -lt "$2" ]; then
+    usage
+    exit 1
+  fi
+}
+
+check_arguments $# 2
+
+case $1 in
+  pack )
+    pack "$2" "$3"
+    ;;
+  unpack )
+    unpack "$2"
+    ;;
+  * )
+    usage
+    exit 1
+    ;;
+esac

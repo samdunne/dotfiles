@@ -13,6 +13,9 @@ else # OS X `ls`
 	colorflag="-G"
 fi
 
+# Allow aliases to be sudo'd
+alias sudo='sudo '
+
 # Always use color output for `ls`
 alias ls="command ls -G"
 
@@ -38,3 +41,17 @@ alias grep="grep --color=auto"
 
 # Use multiple SSH configurations
 alias ssh='cat ~/.ssh/config* > ~/.ssh/compilation && ssh -F ~/.ssh/compilation'
+
+# Display the path in seperate lines
+alias path='echo -e ${PATH//:/\\n}'
+
+# Confirm before overwriting
+# -----------------------------------------------------------------------------
+# I know it is bad practice to override the default commands, but this is for
+# my own safety. If you really want the original "instakill" versions, you can
+# use "command rm", "\rm", or "/bin/rm" inside your own commands, aliases, or
+# shell functions. Note that separate scripts are not affected by the aliases
+# defined here.
+alias cp='cp -i'
+alias mv='mv -i'
+alias rm='rm -i'

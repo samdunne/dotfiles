@@ -22,6 +22,8 @@ vagrant
   destroy           -- Destroy all vagrant machines
   list              -- List all vagrant machines
   box-update        -- Update all vagrant boxes
+
+list                -- List all running VM's under all hypervisors
 EOF
 )
 
@@ -140,6 +142,16 @@ case $1 in
     ;;
   vagrant )
     vagrant-commands "$2"
+    ;;
+  list )
+    echo "Running VMWare VM's:"
+    vmware-commands list
+    echo " "
+    echo "Running Virtualbox VM's:"
+    virtualbox-commands list
+    echo " "
+    echo "Running Vagrant VM's:"
+    vagrant-commands list
     ;;
   * )
     usage

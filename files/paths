@@ -19,13 +19,10 @@ export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
 # VMWare Fusion CLI Tools
 export PATH="/Applications/VMware\ Fusion.app/Contents/Library:$PATH"
 
-# chefdk
-export PATH="/opt/chefdk/bin:$PATH"
-export PATH="/opt/chefdk/embedded/bin:$PATH"
-
-# Perl
-export PATH="$HOME/.perl/bin:$PATH"
+# ChefDK
+eval "$(chef shell-init bash)"
 
 # Go
-export PATH="$GOPATH/bin:$PATH"
-export PATH="$GOROOT/bin:$PATH"
+export GOPATH="$HOME/code/samdunne/go"
+export GOROOT="$(brew --prefix go)/libexec"
+export PATH="$GOPATH/bin:$GOROOT/bin:$PATH"

@@ -20,7 +20,8 @@ chmod a+x sync
 
 pushd setup
 
-for script in {brew,go,hashicorp,macos,python,ruby,vagrant,sublime,external}; do
+for script in scripts/{brew,go,hashicorp,macos,python,ruby,vagrant,sublime,external}; do
+  # shellcheck source=/dev/null
   source "$HOME"/.bash_profile
   chmod a+x "$script"
   /bin/bash "$script"
@@ -29,4 +30,5 @@ unset script;
 
 popd
 
+# shellcheck source=/dev/null
 source "$HOME"/.bash_profile

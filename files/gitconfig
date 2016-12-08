@@ -76,6 +76,7 @@
 	# Make `git rebase` safer on OS X
 	# More info: <http://www.git-tower.com/blog/make-git-rebase-safe-on-osx/>
 	trustctime = false
+  editor = vim
 
 [commit]
   template = ~/.gitmessage
@@ -105,6 +106,9 @@
 	added = yellow
 	changed = green
 	untracked = cyan
+
+[credential]
+  helper = osxkeychain
 
 [diff]
 
@@ -156,3 +160,12 @@
 [user]
   name = "Sam Dunne"
   signingkey = 0x02E4FD6BF70083E7
+
+[github]
+  user = "samdunne"
+
+[http]
+  cookiefile = ~/.gitcookies
+
+[gpg]
+  program = gpg2

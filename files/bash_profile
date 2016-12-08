@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 
-# Add ~/bin
+# Add ~/.bin
 export PATH="$HOME/.bin:$PATH";
 
 # Load ~/.paths, ~/.extra, ~/.bash_prompt, ~/.exports, ~/.aliases and ~/.functions
 # ~/.extra can be used for settings you don’t want to commit
-for file in ~/.{paths,extra,bash_prompt,exports,aliases,functions,aws_credentials}; do
+for file in ~/.dotfiles/.{paths,extra,bash_prompt,exports,aliases,functions,aws_credentials}; do
+  # shellcheck source=/dev/null
 	[ -r "$file" ] && [ -f "$file" ] && source "$file";
 done;
 unset file;
@@ -28,12 +29,15 @@ done;
 
 # Add tab completion for many Bash commands
 if which brew > /dev/null && [ -f "$(brew --prefix)/etc/bash_completion" ]; then
+  # shellcheck source=/dev/null
   source "$(brew --prefix)/etc/bash_completion";
 elif [ -f /etc/bash_completion ]; then
+  # shellcheck source=/dev/null
   source /etc/bash_completion;
 fi;
 
 if [ -f ~/.gnupg/.gpg-agent-info ] && [ -n "$(pgrep gpg-agent)" ]; then
+    # shellcheck source=/dev/null
     source ~/.gnupg/.gpg-agent-info
     export GPG_AGENT_INFO
 else

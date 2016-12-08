@@ -1,0 +1,83 @@
+#!/usr/bin/env bash
+
+# Create a new directory and enter it
+function md() {
+	mkdir -p "$@" && "$(cd "$@" || exit)"
+}
+
+# find shorthand
+function f() {
+	find . -name "$1"
+}
+
+# Copy w/ progress
+function cp_p () {
+	rsync -WavP --human-readable --progress "$1" "$2"
+}
+
+function ssh-key() {
+	ssh-keygen -b 4096 -f ~/.ssh/id_rsa_"$1" -C sam@"$1"_4096
+}
+
+# take this repo and copy it to somewhere else minus the .git stuff.
+function gitexport(){
+	mkdir -p "$1"
+	git archive "$(git rev-parse --abbrev-ref HEAD)" | tar -x -C "$1"
+}
+
+# All the dig info
+function digga() {
+	dig +nocmd "$1" any +multiline +noall +answer
+}
+
+# change the version of java being used on the fly
+function setjdk() {
+	export JAVA_HOME=$(/usr/libexec/java_home -v "$1")
+}
+
+function update() {
+	sudo softwareupdate -i -a
+
+	# Homebrew
+	brew update
+	brew upgrades
+	brew cleanup
+  brew prune
+	brew cask cleanup
+
+	# Ruby gems
+	gem cleanup
+	gem update
+}
+
+function chef_json() {
+	chef exec ruby -e 'p ARGF.read' "$1"
+}
+
+function cleanup_berkshelf() {
+	rm -rf "$HOME/.berkshelf/cookbooks"
+	rm -rf "$HOME/.berkshelf/.cache"
+}
+
+function terraform-chef-destroy() {
+	grep '"name":' "terraform.tfstate" | awk '{print $2}' | sort | uniq | xargs -I {} sh -c "knife node delete -y {}; knife client delete -y {} || true"
+	terraform destroy
+}
+
+function berksderp() {
+	vagrant destroy -f
+	rm Berksfile.lock
+	rm -rf .vagrant/
+	cleanup_berkshelf
+}
+
+function vagrant-global-destroy() {
+	vagrant global-status | awk '/running/{print $1}' | xargs -n 1 -- vagrant destroy -f
+	cleanup_berkshelf
+	vagrant global-status --prune
+}
+
+function vagrant-rage() {
+	berksderp
+	vagrant up
+}

@@ -1,3 +1,4 @@
+cask_args appdir: '~/Applications'
 tap 'caskroom/cask'
 tap 'caskroom/versions'
 tap 'homebrew/brewdler'
@@ -79,6 +80,7 @@ brew 'perl'
 brew 'pinentry-mac'
 brew 'python', args: ['with-brewed-openssl']
 brew 'ruby'
+brew 'rpm'
 brew 'shellcheck'
 brew 'ssh-copy-id'
 brew 'uncrustify'
@@ -104,7 +106,9 @@ cask 'viscosity'
 cask 'vlc'
 cask 'vmware-fusion7'
 cask 'wireshark'
-mas 'Twitter (4.2.2)', id: 409789998
-mas 'Keynote (7.0)', id: 409183694
-mas 'BetterSnapTool (1.7)', id: 417375580
-mas 'Numbers (4.0)', id: 409203825
+cask 'whatsapp'
+mas 'Twitter', id: 409789998
+mas 'Keynote', id: 409183694
+mas 'Pages', id: 409201541
+mas 'BetterSnapTool', id: 417375580
+mas 'Numbers', id: 409203825

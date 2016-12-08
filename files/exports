@@ -30,11 +30,10 @@ export HISTIGNORE="pwd;exit:date:* --help"
 # After each command, append to the history file and reread it.
 export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; history -r";
 
-# Link Homebrew casks in `/Applications` rather than `~/Applications`
-export HOMEBREW_CASK_OPTS="--appdir=/Applications"
-
-# Where does the code go
-export CODE_PATH="$HOME/code/samdunne"
+# Homebrew settings
+export HOMEBREW_CASK_OPTS="--appdir=~/Applications --require-sha"
+export HOMEBREW_NO_ANALYTICS=1
+export HOMEBREW_NO_INSECURE_REDIRECT=1
 
 # Prefer US English and use UTF-8
 export LANG="en_US.UTF-8";
@@ -54,10 +53,3 @@ export GIT_SSH_COMMAND="cat ~/.ssh/config* > ~/.ssh/compilation && ssh -F ~/.ssh
 
 # Docker
 export DOCKER_REPO_PREFIX=samdunne
-
-# Go
-export GOPATH="$CODE_PATH/go"
-export GOROOT="$(brew --prefix go)"/libexec
-
-# ChefDK
-eval "$(chef shell-init bash)"

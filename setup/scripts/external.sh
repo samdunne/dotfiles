@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 if mount | grep "/Volumes/bumble-drive"; then
   /bin/bash /Volumes/bumble-drive/sensitive/setup

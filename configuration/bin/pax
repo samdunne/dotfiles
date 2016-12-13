@@ -20,6 +20,7 @@ pack() {
     echo -e "\tcreates archive of files 1-N\n"
   else
     DEST=$1
+
     shift
 
     case $1 in
@@ -34,10 +35,15 @@ pack() {
 
 unpack() {
   if [ -f "$1" ] ; then
-    local filename=$(basename "$1")
-    local foldername="${filename%%.*}"
-    local fullpath=`perl -e 'use Cwd "abs_path";print abs_path(shift)' "$1"`
+    local filename;
+    local foldername;
+    local fullpath;
     local didfolderexist=false
+
+    filename=$(basename "$1")
+    foldername="${filename%%.*}"
+    fullpath=$(perl -e 'use Cwd "abs_path";print abs_path(shift)' "$1")
+
     if [ -d "$foldername" ]; then
       didfolderexist=true
       read -rp "$foldername already exists, do you want to overwrite it? (y/n) " -n 1
@@ -46,7 +52,9 @@ unpack() {
         return
       fi
     fi
-    mkdir -p "$foldername" && cd "$foldername"
+
+    mkdir -p "$foldername" && cd "$foldername" || exit
+
     case $1 in
       *.tar.bz2) tar xjf "$fullpath" ;;
       *.tar.gz) tar xzf "$fullpath" ;;

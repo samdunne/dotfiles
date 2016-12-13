@@ -2,7 +2,7 @@
 
 # Create a new directory and enter it
 function md() {
-	mkdir -p "$@" && "$(cd "$@" || exit)"
+	mkdir -p "$@" && cd "$@" || exit
 }
 
 # find shorthand
@@ -32,7 +32,8 @@ function digga() {
 
 # change the version of java being used on the fly
 function setjdk() {
-	export JAVA_HOME=$(/usr/libexec/java_home -v "$1")
+  export JAVA_HOME
+	JAVA_HOME=$(/usr/libexec/java_home -v "$1")
 }
 
 function update() {

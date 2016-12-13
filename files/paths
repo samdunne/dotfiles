@@ -1,20 +1,17 @@
 #!/usr/bin/env bash
-# gnu
-export PATH="$(brew --prefix coreutils)/libexec/gnubin:$PATH"
-
-# nvm
-export NVM_DIR="$HOME/.nvm"
-
-source "$(brew --prefix nvm)/nvm.sh"
-
-# npm
-export PATH="$HOME/.node/bin:$PATH"
+# brew
+export PATH="$HOME/.homebrew/bin:$HOME/.homebrew/sbin:$PATH"
 
 # recommended by brew doctor
 export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
 
+# gnu
+# shellcheck disable=SC2155
+export PATH="$(brew --prefix coreutils)/libexec/gnubin:$PATH"
+
 # java
-export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
+export JAVA_HOME
+JAVA_HOME="$(/usr/libexec/java_home -v 1.8)"
 
 # VMWare Fusion CLI Tools
 export PATH="/Applications/VMware\ Fusion.app/Contents/Library:$PATH"
@@ -24,5 +21,6 @@ eval "$(chef shell-init bash)"
 
 # Go
 export GOPATH="$HOME/code/samdunne/go"
-export GOROOT="$(brew --prefix go)/libexec"
+export GOROOT
+GOROOT="$(brew --prefix go)/libexec"
 export PATH="$GOPATH/bin:$GOROOT/bin:$PATH"

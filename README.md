@@ -2,6 +2,8 @@
 
 These are my dotfiles. There are many like them, but these are mine.
 
+[![Build Status](https://travis-ci.org/samdunne/dotfiles.svg?branch=master)](https://travis-ci.org/samdunne/dotfiles)
+
 ## Install on a new machine
 
 ```bash

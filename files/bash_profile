@@ -29,7 +29,7 @@ done;
 
 # Add tab completion for many Bash commands
 # shellcheck source=/dev/null
-source "$(brew --prefix)/etc/bash_completion"
+source "$(brew --prefix)/share/bash-completion/bash_completion"
 
 if [ -f ~/.gnupg/.gpg-agent-info ] && [ -n "$(pgrep gpg-agent)" ]; then
     # shellcheck source=/dev/null

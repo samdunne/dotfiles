@@ -1,53 +1,12 @@
 #!/usr/bin/env ruby
+require 'gitlab'
+require 'git'
+require 'fileutils'
 
-require 'httparty'
+FileUtils.mkdir_p "#{ENV['HOME']}/code/samdunne/gitlabs"
 
-# # if you want to define constant
-# ORGN_API_URL = 'https://gitlab.example.com/api/v3/'
-# PRIVATE_TOKEN = 'QALWKQFAGZDWQYDGHADS' # as query string
-# visit - https://gitlab.example.com/profile/account
+gitlab = Gitlab.client(endpoint: ENV['gitlab_endpoint'], private_token: ENV['gitlab_private_token'], httparty: { verify: false })
 
-class MyGitlab
-  include HTTParty
-
-  def self.get_all resource
-    get(url_with_token(resource), verify: false).parsed_response
-  end
-
-  def self.url_with_token(resource_url)
-    # ONE WAY
-    # Enter values in runtime
-    print "Enter organization url for gitlab: "
-    orgn_api_url = gets.chomp
-    print "Enter private token for gitlab: "
-    private_token = gets.chomp
-    url = URI.join(orgn_api_url, resource_url)
-    "#{url}?private_token=#{private_token}"
-    ###########################################
-    # # ANOTHER WAY
-    # # if you have defined constant
-    # url = URI.join(ORGN_API_URL, resource_url)
-    # "#{url}?private_token=#{PRIVATE_TOKEN}"
-  end
-end
-
-def main
-  projects = MyGitlab.get_all('projects')
-  # keys just for useful reference
-  # keys = ['name', 'description', 'ssh_url_to_repo', 'web_url', 'path_with_namespace']
-  count = projects.count
-  projects.each_with_index do |project, idx|
-    puts "\n#{(100.0 * idx / count).round(2)}% done"
-    puts "clonning project #{idx+1} of #{projects.count}..."
-    `git clone #{project['ssh_url_to_repo']}`
-  end
-  puts "\n\nClonning complete.\n\n"
-
-end
-
-if __FILE__ == $0
-  puts "Clones all the repo from gitlab"
-  puts "You must have: organization url:\n\te.g. https://gitlab.example.com/api/v3/"
-  puts "You must have: private token from your account (https://gitlab.example.com/profile/account):\n\te.g. QALWKQFAGZDWQYDGHADS"
-  main
+gitlab.projects(per_page: 400).each do |project|
+  Git.clone(project.ssh_url_to_repo, "exported_repos/#{project.name}")
 end

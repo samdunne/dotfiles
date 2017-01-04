@@ -2,9 +2,6 @@
 # brew
 export PATH="$HOME/.homebrew/bin:$HOME/.homebrew/sbin:$PATH"
 
-# recommended by brew doctor
-export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
-
 # gnu
 # shellcheck disable=SC2155
 export PATH="$(brew --prefix coreutils)/libexec/gnubin:$PATH"

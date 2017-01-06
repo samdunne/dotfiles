@@ -54,3 +54,6 @@ export GIT_SSH_COMMAND="cat ~/.ssh/config* > ~/.ssh/compilation && ssh -F ~/.ssh
 
 # Docker
 export DOCKER_REPO_PREFIX=samdunne
+
+# RVM
+export PATH="$PATH:$HOME/.rvm/bin"
